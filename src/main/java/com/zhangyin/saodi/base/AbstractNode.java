@@ -27,6 +27,8 @@ public abstract class  AbstractNode {
 	//当前节点 在某个方向上 连接的其他节点
 	private Map<Direction,AbstractNode> moves;
 	
+	private boolean isAccessPoint=false;
+	
     public	AbstractNode(){
     	moves=new HashMap<Direction, AbstractNode>();
 	}
@@ -56,6 +58,14 @@ public abstract class  AbstractNode {
 	public void setMoves(Map<Direction, AbstractNode> moves) {
 		this.moves = moves;
 	}
+	public boolean isAccessPoint() {
+		return isAccessPoint;
+	}
+	public void setAccessPoint(boolean isAccessPoint) {
+		this.isAccessPoint = isAccessPoint;
+	}
+	
+	
 	
 	
 	

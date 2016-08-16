@@ -116,5 +116,25 @@ public enum Direction {
 		 }
 		 return false;
 	 }
+	 
+	 public static boolean isThreeDegreeAccessPoint(AbstractNode n,AbstractNode node,Direction d){
+		 Set<Direction> nSet = n.getMoves().keySet();
+		 assert nSet.size()==3;
+		 Set<Direction> nodeSet = node.getMoves().keySet(); 
+		 assert nodeSet.size()==3;
+		 
+		 Direction nlackofDirection = lackofDirection(nSet);
+		 Direction nodelackofDirection = lackofDirection(nodeSet);
+		 
+		 Set<Direction> temp=new HashSet<Direction>();
+		 temp.add(nodelackofDirection);
+		 temp.add(nlackofDirection);
+		 temp.add(d);
+		 temp.add(getInverseDirection(d));
+		 if(!isFullDirection(temp)){
+			 return false;
+		 }
+		 return isPair(nlackofDirection, nodelackofDirection); 
+	 }
 
 }

@@ -1,5 +1,9 @@
 package com.zhangyin.saodi.base;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * 关卡地图 每个关卡的地图
  * 
@@ -15,13 +19,19 @@ public class LevelMap {
 
 	public RealNode[][] nodes;
 
+	public List<RealNode> nodesets;
+
 	public LevelMap(String map, Integer level, Integer row, Integer col) {
 		this.map = map;
 		this.level = level;
 		this.row = row;
 		this.col = col;
 		assert map.length() == row * col;
+		nodesets = new ArrayList<RealNode>(map.length());
+		// 初始化 数组，把map的字符串转化为数组
 		init();
+		// 初始化每个节点连接的各个方向 相当于初始化 每个Node的moves
+		initALLMoveDirection();
 	}
 
 	// 初始化 RealNode 数组 只包含所有的空白节点，所有的障碍物都是用null表示
@@ -34,11 +44,11 @@ public class LevelMap {
 				if (map.charAt(count) == '0') {
 					RealNode n = new RealNode(i, j);
 					nodes[i][j] = n;
+					nodesets.add(n);
 				}
 				count++;
 			}
 		}
-		initALLMoveDirection();
 	}
 
 	// 初始化每个节点的连接 判断节点的上下左右是否有别的节点，有的话，修改moves信息
@@ -55,20 +65,19 @@ public class LevelMap {
 					}
 
 					RealNode down = getDown(i, j);
-					if (up != null) {
+					if (down != null) {
 						// 当前节点的上方也不为空
 						n.put(Direction.Down, down);
 					}
-					
-					
+
 					RealNode left = getLeft(i, j);
-					if (up != null) {
+					if (left != null) {
 						// 当前节点的上方也不为空
 						n.put(Direction.Left, left);
 					}
-					
+
 					RealNode right = getRight(i, j);
-					if (up != null) {
+					if (right != null) {
 						// 当前节点的上方也不为空
 						n.put(Direction.Right, right);
 					}
@@ -77,11 +86,20 @@ public class LevelMap {
 
 			}
 		}
-		// initAccessPoint();	
+		// initAccessPoint();
 	}
 
-	
+	// 获取所有两度的节点
+	public List<RealNode> getTwoDegreeNodes() {
+		List<RealNode> collect = nodesets.stream().filter(n -> n.degree() == 2).collect(Collectors.toList());
+		return collect;
+	}
 
+	// 获取所有三度的节点
+	public List<RealNode> getThreeDegreeNodes() {
+		List<RealNode> collect = nodesets.stream().filter(n -> n.degree() == 3).collect(Collectors.toList());
+		return collect;
+	}
 
 	// 判断一组数据是否超出了节点数组索引的范围
 	private boolean isOutOfRange(int i, int j) {
