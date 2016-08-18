@@ -51,8 +51,10 @@ public class Area {
 			VirtualNode virtualNode = (VirtualNode) iterator.next();
 			
 		}
-		
-		
+	
+	}
+	
+	public void searchFromNode(){
 		
 	}
 	
