@@ -2,6 +2,7 @@ package com.zhangyin.saodi.area;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Queue;
 import java.util.Set;
 
 import com.zhangyin.saodi.base.AbstractNode;
@@ -22,6 +23,8 @@ public class Area {
 	Set<VirtualNode> virtualNodes;
 	
 	Set<RealNode>  realnodes;
+	
+	Queue<AbstractNode> queue;
 
 	public Area(Set<AbstractNode> areaNode) {
 		virtualNodes=new HashSet<>();
@@ -36,6 +39,27 @@ public class Area {
 		}
 		checkPairVirtualNode();
 	}
+	
+	/**搜索  无起点的区域答案
+	 * 从一个虚拟节点开始
+	 */
+	public  void SearchFromVirtulaNode(){
+		/**
+		 * 从一个虚拟节点开始
+		 */
+		for (Iterator iterator = virtualNodes.iterator(); iterator.hasNext();) {
+			VirtualNode virtualNode = (VirtualNode) iterator.next();
+			
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	//检测 是否有成对的一对虚拟节点，都在同一个区域，
 	//如果是这种情况的话，需要把这两个虚拟节点全部删除掉
 	public void checkPairVirtualNode(){
