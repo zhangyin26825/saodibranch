@@ -34,11 +34,11 @@ public class AccessPointJudge {
 			return false;
 		}	
 		//判断一个节点周围有没有出入点  这里为了防止 太多的出入点相连  障碍物比较多的地方，三三组合的会比较多，同一个节点会有多种三三的组合，各种冲突，所以这里要限制一下
-		boolean aroundhasAccessPoint = aroundhasAccessPoint(n);
-		if(aroundhasAccessPoint){
-			return false;
-		}	
+		boolean aroundhasAccessPoint = aroundhasAccessPoint(n);		
 		if (n.degree() == 2) {
+			if(aroundhasAccessPoint){
+				return false;
+			}
 			return twoDegreeNodeisAccessPoint(n);
 		} else if (n.degree() == 3) {
 			return threeDegreeNodeisAccessPoint(n);
@@ -52,8 +52,9 @@ public class AccessPointJudge {
 			Direction direction = (Direction) iterator.next();
 			AbstractNode abstractNode = n.getMoves().get(direction);
 			if(abstractNode.degree()==3&&
-					!aroundhasAccessPoint(n)&&
-					Direction.isThreeDegreeAccessPoint(n,abstractNode,direction)){
+			//		!aroundhasAccessPoint(n)&&
+					Direction.isThreeDegreeAccessPoint(n,abstractNode,direction)
+					&&!abstractNode.isAccessPoint()){
 			//FIXME 这里对三度节点进行 条件判断， 第二条，需不需要这样，其实不确定，
 			
 				return true;
@@ -100,8 +101,9 @@ public class AccessPointJudge {
 			Direction direction = (Direction) iterator.next();
 			AbstractNode abstractNode = n.getMoves().get(direction);
 			if(abstractNode.degree()==3&&
-					!aroundhasAccessPoint(n)&&
-					Direction.isThreeDegreeAccessPoint(n,abstractNode,direction)){ 
+					//!aroundhasAccessPoint(n)&&
+					Direction.isThreeDegreeAccessPoint(n,abstractNode,direction)
+					&&!abstractNode.isAccessPoint()){ 
 			//FIXME 这里对三度节点进行 条件判断， 第二条，需不需要这样，其实不确定，
 				return new ThreeOfPair(n, direction, abstractNode);
 			}

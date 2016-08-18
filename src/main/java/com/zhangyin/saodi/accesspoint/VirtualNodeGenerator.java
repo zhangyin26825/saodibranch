@@ -82,19 +82,30 @@ public class VirtualNodeGenerator {
 		 */
 		TwoDegreeVirtualNode realNodevirtual=new TwoDegreeVirtualNode(realNode);
 		TwoDegreeVirtualNode anothervirtual=new TwoDegreeVirtualNode(realNode);
+		realNodevirtual.setPair(anothervirtual);
+		anothervirtual.setPair(realNodevirtual);
+		
 		
 		realNodevirtual.put(d, anothervirtual);
 		anothervirtual.put(Direction.getInverseDirection(d), realNodevirtual);
 		
 		realNode.put(d, realNodevirtual);
+		realNodevirtual.put(Direction.getInverseDirection(d), realNode);
+		
 		another.put(Direction.getInverseDirection(d), anothervirtual);
-		
-		realNodevirtual.setPair(anothervirtual);
-		anothervirtual.setPair(realNodevirtual);
-		
+		anothervirtual.put(d, another);
+
 		virtualNodes.add(realNodevirtual);
-		virtualNodes.add(anothervirtual);			
-	}
+		virtualNodes.add(anothervirtual);	
+		assert realNode.getMoves().get(d)==realNodevirtual;
+		assert realNodevirtual.getMoves().get(d)==anothervirtual;
+		assert anothervirtual.getMoves().get(d)==another;
+		
+		assert another.getMoves().get(Direction.getInverseDirection(d))==anothervirtual;
+		assert anothervirtual.getMoves().get(Direction.getInverseDirection(d))==realNodevirtual;
+		assert realNodevirtual.getMoves().get(Direction.getInverseDirection(d))==realNode;
+		
+		}	
 
 	public List<VirtualNode> getVirtualNodes() {
 		return virtualNodes;

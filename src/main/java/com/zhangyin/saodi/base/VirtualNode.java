@@ -1,5 +1,7 @@
 package com.zhangyin.saodi.base;
 
+import java.util.Iterator;
+
 public abstract class VirtualNode extends AbstractNode{
 
 	@Override 
@@ -19,4 +21,26 @@ public abstract class VirtualNode extends AbstractNode{
 	 * 
 	 */
 	public abstract VirtualNode getPair();
+	
+	
+	public static void destroy(VirtualNode a,VirtualNode b){
+		assert a.getPair()==b;
+		assert b.getPair()==a;
+		
+		Direction atob=null;
+		for (Iterator iterator = a.getMoves().keySet().iterator(); iterator.hasNext();) {
+			Direction type = (Direction) iterator.next();
+			if(a.getMoves().get(type)==b){
+				atob=type;
+			}	
+		}
+		assert atob!=null;
+		AbstractNode anode=a.getMoves().get(Direction.getInverseDirection(atob));
+		AbstractNode bnode=b.getMoves().get(atob);
+		assert anode.isReal();
+		assert bnode.isReal();
+		
+		anode.put(atob, bnode);
+		bnode.put(Direction.getInverseDirection(atob), anode);
+	}
 }

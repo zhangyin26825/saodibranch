@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.zhangyin.saodi.accesspoint.VirtualNodeGenerator;
+import com.zhangyin.saodi.area.Area;
+import com.zhangyin.saodi.area.AreaFactory;
 import com.zhangyin.saodi.base.LevelMap;
 import com.zhangyin.saodi.base.RealNode;
 import com.zhangyin.saodi.base.VirtualNode;
@@ -28,14 +30,19 @@ public class Main {
 		List<RealNode> nodesets = levelmap.nodesets;
 		for (Iterator iterator = nodesets.iterator(); iterator.hasNext();) {
 			RealNode realNode = (RealNode) iterator.next();
-			System.out.println(realNode.getColNum()+"　　　　"+realNode.getColNum()+"  "+realNode.degree());
+			//System.out.println(realNode.getColNum()+"　　　　"+realNode.getColNum()+"  "+realNode.degree());
 		}
 		//根据地图信息，判断出所有的AccessPoint节点，生成虚拟节点，把虚拟节点插入到真实的节点之中
 		VirtualNodeGenerator vmg=new VirtualNodeGenerator(levelmap);
 		//得到所有的 虚拟节点
 		List<VirtualNode> virtualNodes = vmg.getVirtualNodes();
-		System.out.println(virtualNodes.size());
+		System.out.println("虚拟节点的数量"+virtualNodes.size());
+		
 		MyJFrame frame=new  MyJFrame(levelmap);
+		
+		AreaFactory factory=new AreaFactory(virtualNodes);
+		List<Area> areas = factory.generatorArea();
+		System.out.println("区域的数量为"+areas.size());
 
 	}
 

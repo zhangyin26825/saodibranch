@@ -45,7 +45,7 @@ public class RealNodePanel extends JPanel{
 				right=virtualLentth;
 			}
 			
-			MatteBorder createMatteBorder = BorderFactory.createMatteBorder(top, left, bottom, right, Color.yellow);
+			MatteBorder createMatteBorder = BorderFactory.createMatteBorder(top, left, bottom, right, Color.blue);
 			this.setBorder(createMatteBorder);
 		}
 		
