@@ -30,6 +30,20 @@ public class Step {
 	Stack<AbstractNode> s;
 	
 	
+	
+	
+	public Step(boolean isfirst, AbstractNode start, AbstractNode end, Direction d, Stack<AbstractNode> s) {
+		super();
+		this.isfirst = isfirst;
+		this.start = start;
+		this.end = end;
+		this.d = d;
+		this.s = s;
+	}
+
+
+
+
 	public void mark(boolean b){
 		s.forEach(a->a.setMarked(b));
 		if(isfirst){

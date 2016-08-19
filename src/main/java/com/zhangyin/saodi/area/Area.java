@@ -6,8 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Collectors;
 
 import com.zhangyin.saodi.base.AbstractNode;
+import com.zhangyin.saodi.base.Direction;
 import com.zhangyin.saodi.base.RealNode;
 import com.zhangyin.saodi.base.VirtualNode;
 
@@ -29,6 +32,8 @@ public class Area {
 	Set<VirtualNode> del;
 	
 	Queue<AbstractNode> queue;
+	
+	Stack<Step> result;
 
 	public Area(Set<AbstractNode> areaNode) {
 		virtualNodes=new HashSet<>();
@@ -42,14 +47,15 @@ public class Area {
 			}
 		}
 		checkPairVirtualNode();
+		result=new Stack<>();
 	}
 	
 	/**搜索  无起点的区域答案
 	 * 从一个虚拟节点开始
 	 */
-	public  void SearchFromVirtulaNode(){
+	public  void SearchFromVirtulaNode(boolean isfirst){
 		/**
-		 * 从一个虚拟节点开始
+		 * 这里是从虚拟节点开始的第一个虚拟节点，
 		 */
 		for (Iterator iterator = virtualNodes.iterator(); iterator.hasNext();) {
 			VirtualNode virtualNode = (VirtualNode) iterator.next();
@@ -58,11 +64,65 @@ public class Area {
 	
 	}
 	
-	public void searchFromNode(){
+	public void searchFromNode(AbstractNode node,boolean isfirst){
+		//得到当前节点可以前进的方向
+		Set<Direction> collect = node.getMoves().keySet().stream().filter(d->{
+			AbstractNode temp=node.getMoves().get(d);
+			if(realnodes.contains(temp)||virtualNodes.contains(temp)){
+				return true;
+			}
+			return false;
+			}).collect(Collectors.toSet());
+		
+		for (Iterator iterator = collect.iterator(); iterator.hasNext();) {
+			Direction direction = (Direction) iterator.next();
+			
+			Stack<AbstractNode> s=new Stack<>();
+			AbstractNode temp = node.getMoves().get(direction);
+			while(temp!=null&&!temp.isMarked()){	
+				s.push(temp);
+				if(!temp.isReal()){
+					break;
+				}
+				temp = temp.getMoves().get(direction);	
+			}
+			if(s.isEmpty()){
+				break;
+			}
+			AbstractNode end=s.peek();
+			Step step=new Step(isfirst,node,end,direction,s);
+			step.mark(true);
+			result.push(step);
+			if(end.isReal()){
+				//行走一步之后，到达一个真实节点
+				searchFromNode(end, false);
+			}else{
+				//行走一步之后，达到一个虚拟节点
+				//判断是否结束，如果结束的话，
+				SearchFromVirtulaNode(false);
+			}
+			
+		}
+		
 		
 	}
 	
-	
+	public boolean isfinish(){
+		for (Iterator iterator = realnodes.iterator(); iterator.hasNext();) {
+			RealNode realNode = (RealNode) iterator.next();
+			if(!realNode.isMarked()){
+				return false;
+			}
+		}
+		for (Iterator iterator = virtualNodes.iterator(); iterator.hasNext();) {
+			VirtualNode virtualNode = (VirtualNode) iterator.next();
+			if(!((virtualNode.isRequire()&&virtualNode.isMarked())||!virtualNode.isRequire())){
+				return false;
+			}
+			
+		}
+		return true;
+	}
 	
 	
 	
