@@ -43,4 +43,6 @@ public abstract class VirtualNode extends AbstractNode{
 		anode.put(atob, bnode);
 		bnode.put(Direction.getInverseDirection(atob), anode);
 	}
+	
+	
 }

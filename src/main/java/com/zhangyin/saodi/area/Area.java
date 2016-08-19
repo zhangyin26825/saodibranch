@@ -1,7 +1,9 @@
 package com.zhangyin.saodi.area;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -23,6 +25,8 @@ public class Area {
 	Set<VirtualNode> virtualNodes;
 	
 	Set<RealNode>  realnodes;
+	
+	Set<VirtualNode> del;
 	
 	Queue<AbstractNode> queue;
 
@@ -65,15 +69,23 @@ public class Area {
 	//检测 是否有成对的一对虚拟节点，都在同一个区域，
 	//如果是这种情况的话，需要把这两个虚拟节点全部删除掉
 	public void checkPairVirtualNode(){
+		 del=new HashSet<>();
 		for (Iterator iterator = virtualNodes.iterator(); iterator.hasNext();) {
 			VirtualNode virtualNode = (VirtualNode) iterator.next();
 			VirtualNode pair = virtualNode.getPair();
 			assert pair!=null;
 			if(virtualNodes.contains(pair)){
-				System.out.println("进行了一次虚拟节点的删除");
+				//System.out.println("进行了一次虚拟节点的删除");
+				del.add(virtualNode);
+				del.add(pair);
 				VirtualNode.destroy(virtualNode, pair);
+			
+//				virtualNodes.remove(virtualNode);
+//				virtualNodes.remove(pair);
 			}	
 		}
+		assert del.size()%2==0;
+		virtualNodes.removeAll(del);
 	}
 	
 	

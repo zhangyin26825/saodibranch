@@ -2,10 +2,12 @@ package com.zhangyin.saodi;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.zhangyin.saodi.accesspoint.VirtualNodeGenerator;
 import com.zhangyin.saodi.area.Area;
 import com.zhangyin.saodi.area.AreaFactory;
+import com.zhangyin.saodi.area.NodeAreaMapping;
 import com.zhangyin.saodi.base.LevelMap;
 import com.zhangyin.saodi.base.RealNode;
 import com.zhangyin.saodi.base.VirtualNode;
@@ -27,7 +29,8 @@ public class Main {
 //		String map="0001";		
 		
 		LevelMap levelmap=new LevelMap(map, level, row, col);
-		List<RealNode> nodesets = levelmap.nodesets;
+		Set<RealNode> nodesets = levelmap.nodesets;
+		System.out.println("真实节点的数量"+nodesets.size());
 		for (Iterator iterator = nodesets.iterator(); iterator.hasNext();) {
 			RealNode realNode = (RealNode) iterator.next();
 			//System.out.println(realNode.getColNum()+"　　　　"+realNode.getColNum()+"  "+realNode.degree());
@@ -38,11 +41,14 @@ public class Main {
 		List<VirtualNode> virtualNodes = vmg.getVirtualNodes();
 		System.out.println("虚拟节点的数量"+virtualNodes.size());
 		
-		MyJFrame frame=new  MyJFrame(levelmap);
+	//	MyJFrame frame=new  MyJFrame(levelmap);
 		
 		AreaFactory factory=new AreaFactory(virtualNodes);
 		List<Area> areas = factory.generatorArea();
 		System.out.println("区域的数量为"+areas.size());
+		
+		NodeAreaMapping nam=new NodeAreaMapping(areas);
+		System.out.println("节点区域映射中虚拟节点的数量为"+nam.getMap().keySet().stream().filter(n->!n.isReal()).count());
 
 	}
 

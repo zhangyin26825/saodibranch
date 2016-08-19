@@ -1,7 +1,9 @@
 package com.zhangyin.saodi.base;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -19,7 +21,7 @@ public class LevelMap {
 
 	public RealNode[][] nodes;
 
-	public List<RealNode> nodesets;
+	public Set<RealNode> nodesets;
 
 	public LevelMap(String map, Integer level, Integer row, Integer col) {
 		this.map = map;
@@ -27,7 +29,7 @@ public class LevelMap {
 		this.row = row;
 		this.col = col;
 		assert map.length() == row * col;
-		nodesets = new ArrayList<RealNode>(map.length());
+		nodesets = new HashSet<RealNode>(map.length());
 		// 初始化 数组，把map的字符串转化为数组
 		init();
 		// 初始化每个节点连接的各个方向 相当于初始化 每个Node的moves

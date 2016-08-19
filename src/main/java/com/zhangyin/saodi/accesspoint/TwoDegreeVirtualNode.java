@@ -29,6 +29,8 @@ public class TwoDegreeVirtualNode extends VirtualNode{
 	public void setPair(VirtualNode pair) {
 		this.pair = pair;
 	}
+
+	
 	
 	
 

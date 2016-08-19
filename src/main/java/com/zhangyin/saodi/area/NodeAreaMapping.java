@@ -1,5 +1,6 @@
 package com.zhangyin.saodi.area;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class NodeAreaMapping {
 	}
 
 	public NodeAreaMapping(List<Area> areas) {
+		map=new HashMap<>();
 		for (Iterator iterator = areas.iterator(); iterator.hasNext();) {
 			Area area = (Area) iterator.next();
 			Set<RealNode> realnodes = area.realnodes;
@@ -38,6 +40,16 @@ public class NodeAreaMapping {
 			}	
 		}
 	}
+
+	public Map<AbstractNode, Area> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<AbstractNode, Area> map) {
+		this.map = map;
+	}
+	
+	
 	
 	
 

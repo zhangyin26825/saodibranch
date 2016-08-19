@@ -1,6 +1,7 @@
 package com.zhangyin.saodi.base;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 /**
@@ -30,7 +31,9 @@ public abstract class  AbstractNode {
 	private boolean isAccessPoint=false;
 	
     public	AbstractNode(){
-    	moves=new HashMap<Direction, AbstractNode>();
+    	//总结一个问题，这里如果不用LinkedHashMap  用hashMap 会造成debug模式跟 正常运行模式运行的结果不一样 
+    	//hashMap 取key的顺序是不定的，搜索两度的节点，设置AccessPoint可能使设置方位出错，因为有些随机取一条边 使整个地图的切割不一致
+    	moves=new LinkedHashMap<Direction, AbstractNode>();
 	}
 	public void put(Direction d,AbstractNode node){
 		moves.put(d, node);

@@ -29,4 +29,8 @@ public class ThreeDegreeVirtualNode extends VirtualNode {
 		this.pair = pair;
 	}
 
+	
+	
+	
+
 }
