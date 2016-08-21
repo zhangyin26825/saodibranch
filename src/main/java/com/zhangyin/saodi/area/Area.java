@@ -56,6 +56,11 @@ public class Area {
 	
 	/**搜索  无起点的区域答案
 	 * 从一个虚拟节点开始
+	 * 
+	 * 搜索的方法是，从一个虚拟节点开始， 
+	 * 中间经过很多步，然后到达一个虚拟节点为结束，
+	 * 结束的步骤肯定是达到一个虚拟节点之后
+	 * 
 	 */
 	public  void SearchFromVirtulaNode(boolean isfirst){
 		/**
@@ -70,7 +75,11 @@ public class Area {
 		}
 	
 	}
-	
+	/***
+	 *  从 一个node开始搜索
+	 * @param node
+	 * @param isfirst
+	 */
 	public void searchFromNode(AbstractNode node,boolean isfirst){
 		//得到当前节点可以前进的方向
 		Set<Direction> collect = node.getMoves().keySet().stream().filter(d->{
@@ -80,10 +89,10 @@ public class Area {
 			}
 			return false;
 			}).collect(Collectors.toSet());
-		
+		//遍历所有的方向
 		for (Iterator iterator = collect.iterator(); iterator.hasNext();) {
 			Direction direction = (Direction) iterator.next();
-			
+			//依据当前的方向，生成一步
 			Stack<AbstractNode> s=new Stack<>();
 			AbstractNode temp = node.getMoves().get(direction);
 			while(temp!=null&&!temp.isMarked()){	
@@ -96,10 +105,16 @@ public class Area {
 			if(s.isEmpty()){
 				continue;
 			}
+			//end代表当前 步的结束节点
 			AbstractNode end=s.peek();
 			Step step=new Step(isfirst,node,end,direction,s);
+			//把当前步设置为已经标记过
 			step.mark(true);
+			//把当前步加入到结果的栈上面去
 			result.push(step);
+			//根据最后节点的状态进行判断，如果是真实节点，递归调用当前的方法
+			//如果是虚拟节点，判断当前是否结束，如果不是的话，继续虚拟节点的搜索
+			// 这里的情况是，到达一个虚拟节点之后，可以达到当前区域的任意一个虚拟节点，重新开始进行这个步骤
 			if(end.isReal()){
 				//行走一步之后，到达一个真实节点
 				searchFromNode(end, false);
@@ -112,6 +127,7 @@ public class Area {
 					SearchFromVirtulaNode(false);
 				}		
 			}
+			//当前步骤完成之后，把step设置为未标记，然后从结果斩出栈
 			step.mark(false);
 			result.pop();
 			
@@ -119,8 +135,12 @@ public class Area {
 		
 		
 	}
-	
+	/**
+	 * 区域完成的标记是 所有的真实节点已经标记，所有的必需的虚拟节点已经标记，所有不必需的虚拟节点可以随意
+	 * @return
+	 */
 	public boolean isfinish(){
+	
 		for (Iterator iterator = realnodes.iterator(); iterator.hasNext();) {
 			RealNode realNode = (RealNode) iterator.next();
 			if(!realNode.isMarked()){

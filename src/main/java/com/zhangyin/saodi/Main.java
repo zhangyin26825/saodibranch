@@ -41,7 +41,7 @@ public class Main {
 		List<VirtualNode> virtualNodes = vmg.getVirtualNodes();
 		System.out.println("虚拟节点的数量"+virtualNodes.size());
 		
-	//	MyJFrame frame=new  MyJFrame(levelmap);
+		MyJFrame frame=new  MyJFrame(levelmap);
 		
 		AreaFactory factory=new AreaFactory(virtualNodes);
 		List<Area> areas = factory.generatorArea();
