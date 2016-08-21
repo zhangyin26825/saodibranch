@@ -34,10 +34,13 @@ public class Area {
 	Queue<AbstractNode> queue;
 	
 	Stack<Step> result;
+	 
+	List<NoStartAreaAnswer> solves;
 
 	public Area(Set<AbstractNode> areaNode) {
 		virtualNodes=new HashSet<>();
 		realnodes=new HashSet<>();
+		solves=new ArrayList<>();
 		for (Iterator iterator = areaNode.iterator(); iterator.hasNext();) {
 			AbstractNode abstractNode = (AbstractNode) iterator.next();
 			if(abstractNode.isReal()){
@@ -48,6 +51,7 @@ public class Area {
 		}
 		checkPairVirtualNode();
 		result=new Stack<>();
+		SearchFromVirtulaNode(true);
 	}
 	
 	/**搜索  无起点的区域答案
@@ -59,7 +63,10 @@ public class Area {
 		 */
 		for (Iterator iterator = virtualNodes.iterator(); iterator.hasNext();) {
 			VirtualNode virtualNode = (VirtualNode) iterator.next();
-			
+			if(virtualNode.isMarked()){
+				continue;
+			}
+			searchFromNode(virtualNode, isfirst);
 		}
 	
 	}
@@ -87,7 +94,7 @@ public class Area {
 				temp = temp.getMoves().get(direction);	
 			}
 			if(s.isEmpty()){
-				break;
+				continue;
 			}
 			AbstractNode end=s.peek();
 			Step step=new Step(isfirst,node,end,direction,s);
@@ -99,8 +106,14 @@ public class Area {
 			}else{
 				//行走一步之后，达到一个虚拟节点
 				//判断是否结束，如果结束的话，
-				SearchFromVirtulaNode(false);
+				if(isfinish()){
+					solves.add(new NoStartAreaAnswer(this, result));
+				}else{
+					SearchFromVirtulaNode(false);
+				}		
 			}
+			step.mark(false);
+			result.pop();
 			
 		}
 		
@@ -147,6 +160,16 @@ public class Area {
 		assert del.size()%2==0;
 		virtualNodes.removeAll(del);
 	}
+
+	public List<NoStartAreaAnswer> getSolves() {
+		return solves;
+	}
+
+	public void setSolves(List<NoStartAreaAnswer> solves) {
+		this.solves = solves;
+	}
+	
+	
 	
 	
 

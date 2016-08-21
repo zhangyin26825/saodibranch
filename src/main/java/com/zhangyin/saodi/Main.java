@@ -46,6 +46,10 @@ public class Main {
 		AreaFactory factory=new AreaFactory(virtualNodes);
 		List<Area> areas = factory.generatorArea();
 		System.out.println("区域的数量为"+areas.size());
+		for (Iterator iterator = areas.iterator(); iterator.hasNext();) {
+			Area area = (Area) iterator.next();
+			System.out.println("该区域的无起点解法有 "+area.getSolves().size());
+		}
 		
 		NodeAreaMapping nam=new NodeAreaMapping(areas);
 		System.out.println("节点区域映射中虚拟节点的数量为"+nam.getMap().keySet().stream().filter(n->!n.isReal()).count());

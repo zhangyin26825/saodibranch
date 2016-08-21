@@ -1,4 +1,7 @@
 package com.zhangyin.saodi.area;
+
+import java.util.Stack;
+
 /**
  * 针对一个区域的无起点解决答案
  * 所谓的无起点，是指，从某个虚拟节点进入，行进某些 Step,从某些节点离开，
@@ -10,5 +13,17 @@ package com.zhangyin.saodi.area;
  * @author Administrator
  */
 public class NoStartAreaAnswer {
+	
+	Area area;
+	
+	Stack<Step> result;
+
+	public NoStartAreaAnswer(Area area, Stack<Step> result) {
+		super();
+		this.area = area;
+		this.result = result;
+	}
+	
+	
 
 }
