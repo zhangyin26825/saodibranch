@@ -102,6 +102,7 @@ public class Area {
 				}
 				temp = temp.getMoves().get(direction);	
 			}
+			//如果当前步没有任何一个节点，说明进入了不能移动的地步，
 			if(s.isEmpty()){
 				continue;
 			}
