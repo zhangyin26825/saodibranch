@@ -39,6 +39,7 @@ public abstract class VirtualNode extends AbstractNode{
 				atob=type;
 			}	
 		}
+		//TODO 这里还有bug 需要修改
 	//	assert atob!=null;
 		AbstractNode anode=a.get(Direction.getInverseDirection(atob));
 		AbstractNode bnode=b.get(atob);
