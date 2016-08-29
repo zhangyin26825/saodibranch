@@ -32,16 +32,16 @@ public class RealNodePanel extends JPanel{
 		}else{
 			this.setBackground(Color.lightGray);	
 			int top=defaultlength,  left=defaultlength,  bottom=defaultlength,  right=defaultlength;
-			if(r.getMoves().containsKey(Direction.Up)&&!r.getMoves().get(Direction.Up).isReal()){
+			if(r.containsKey(Direction.Up)&&!r.get(Direction.Up).isReal()){
 				top=virtualLentth;
 			}
-			if(r.getMoves().containsKey(Direction.Left)&&!r.getMoves().get(Direction.Left).isReal()){
+			if(r.containsKey(Direction.Left)&&!r.get(Direction.Left).isReal()){
 				left=virtualLentth;
 			}
-			if(r.getMoves().containsKey(Direction.Down)&&!r.getMoves().get(Direction.Down).isReal()){
+			if(r.containsKey(Direction.Down)&&!r.get(Direction.Down).isReal()){
 				bottom=virtualLentth;
 			}
-			if(r.getMoves().containsKey(Direction.Right)&&!r.getMoves().get(Direction.Right).isReal()){
+			if(r.containsKey(Direction.Right)&&!r.get(Direction.Right).isReal()){
 				right=virtualLentth;
 			}
 			

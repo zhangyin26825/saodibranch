@@ -47,10 +47,10 @@ public class AccessPointJudge {
 	}
 	//判断一个三度的节点是不是出入点
 	private boolean threeDegreeNodeisAccessPoint(RealNode n) {
-		Set<Direction> keySet = n.getMoves().keySet();
+		Set<Direction> keySet = n.directions();
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			Direction direction = (Direction) iterator.next();
-			AbstractNode abstractNode = n.getMoves().get(direction);
+			AbstractNode abstractNode = n.get(direction);
 			if(abstractNode.degree()==3&&
 			//		!aroundhasAccessPoint(n)&&
 					Direction.isThreeDegreeAccessPoint(n,abstractNode,direction)
@@ -66,16 +66,16 @@ public class AccessPointJudge {
 
 	// 判断一个两度的节点是不是出入点
 	private boolean twoDegreeNodeisAccessPoint(RealNode n) {
-		assert n.getMoves().size()==2;
+		assert n.degree()==2;
 		//如果当前节点连接的两个节点的度数都是2的话，当前节点不是AccessPoint
-		boolean allMatch = n.getMoves().values().stream().allMatch(an->an.degree()==2);
+		boolean allMatch = n.values().stream().allMatch(an->an.degree()==2);
 		if(allMatch){
 			return false;
 		}
 		//然后需要判断的是那种ABCD的特殊情况
 		
-		Map<AbstractNode, Long> collect = n.getMoves().values().stream()  
-				.flatMap(an->an.getMoves().values().stream())
+		Map<AbstractNode, Long> collect = n.values().stream()  
+				.flatMap(an->an.values().stream())
 				.collect(Collectors.groupingBy(cn->cn, Collectors.counting()));
 		//上面的方法去的取  与N相连的节点相连的所有节点，统计节点的个数
 		//所以肯定包含 n节点，又因为是与n相连，所以n肯定会出现两次
@@ -93,13 +93,13 @@ public class AccessPointJudge {
 	}
 	//判断一个节点周围有没有出入点
 	private boolean aroundhasAccessPoint(AbstractNode n){
-		return n.getMoves().values().stream().anyMatch(an->an.isAccessPoint());	 
+		return n.values().stream().anyMatch(an->an.isAccessPoint());	 
 	}
 	public ThreeOfPair getThreeOfPair(RealNode n) {
-		Set<Direction> keySet = n.getMoves().keySet();
+		Set<Direction> keySet = n.directions();
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			Direction direction = (Direction) iterator.next();
-			AbstractNode abstractNode = n.getMoves().get(direction);
+			AbstractNode abstractNode = n.get(direction);
 			if(abstractNode.degree()==3&&
 					//!aroundhasAccessPoint(n)&&
 					Direction.isThreeDegreeAccessPoint(n,abstractNode,direction)

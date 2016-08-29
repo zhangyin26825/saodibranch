@@ -54,6 +54,10 @@ public class RealNode extends AbstractNode{
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return "RealNode [rowNum=" + rowNum + ", colNum=" + colNum + "]";
+	}
 	
 	
 	

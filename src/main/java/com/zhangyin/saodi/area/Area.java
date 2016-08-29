@@ -52,6 +52,7 @@ public class Area {
 		checkPairVirtualNode();
 		result=new Stack<>();
 		SearchFromVirtulaNode(true);
+		resetMark();
 	}
 	
 	/**搜索  无起点的区域答案
@@ -82,8 +83,8 @@ public class Area {
 	 */
 	public void searchFromNode(AbstractNode node,boolean isfirst){
 		//得到当前节点可以前进的方向
-		Set<Direction> collect = node.getMoves().keySet().stream().filter(d->{
-			AbstractNode temp=node.getMoves().get(d);
+		Set<Direction> collect = node.directions().stream().filter(d->{
+			AbstractNode temp=node.get(d);
 			if(realnodes.contains(temp)||virtualNodes.contains(temp)){
 				return true;
 			}
@@ -94,13 +95,13 @@ public class Area {
 			Direction direction = (Direction) iterator.next();
 			//依据当前的方向，生成一步
 			Stack<AbstractNode> s=new Stack<>();
-			AbstractNode temp = node.getMoves().get(direction);
+			AbstractNode temp = node.get(direction);
 			while(temp!=null&&!temp.isMarked()){	
 				s.push(temp);
 				if(!temp.isReal()){
 					break;
 				}
-				temp = temp.getMoves().get(direction);	
+				temp = temp.get(direction);	
 			}
 			//如果当前步没有任何一个节点，说明进入了不能移动的地步，
 			if(s.isEmpty()){
@@ -130,11 +131,8 @@ public class Area {
 			}
 			//当前步骤完成之后，把step设置为未标记，然后从结果斩出栈
 			step.mark(false);
-			result.pop();
-			
-		}
-		
-		
+			result.pop();	
+		}	
 	}
 	/**
 	 * 区域完成的标记是 所有的真实节点已经标记，所有的必需的虚拟节点已经标记，所有不必需的虚拟节点可以随意
@@ -158,6 +156,17 @@ public class Area {
 		return true;
 	}
 	
+	public void resetMark(){
+		for (Iterator iterator = realnodes.iterator(); iterator.hasNext();) {
+			RealNode realNode = (RealNode) iterator.next();
+			realNode.setMarked(false);
+		
+		}
+		for (Iterator iterator = virtualNodes.iterator(); iterator.hasNext();) {
+			VirtualNode virtualNode = (VirtualNode) iterator.next();
+			virtualNode.setMarked(false);			
+		}
+	}
 	
 	
 	//检测 是否有成对的一对虚拟节点，都在同一个区域，
@@ -189,6 +198,24 @@ public class Area {
 	public void setSolves(List<NoStartAreaAnswer> solves) {
 		this.solves = solves;
 	}
+
+	public Set<VirtualNode> getVirtualNodes() {
+		return virtualNodes;
+	}
+
+	public void setVirtualNodes(Set<VirtualNode> virtualNodes) {
+		this.virtualNodes = virtualNodes;
+	}
+
+	public Set<RealNode> getRealnodes() {
+		return realnodes;
+	}
+
+	public void setRealnodes(Set<RealNode> realnodes) {
+		this.realnodes = realnodes;
+	}
+	
+	
 	
 	
 	

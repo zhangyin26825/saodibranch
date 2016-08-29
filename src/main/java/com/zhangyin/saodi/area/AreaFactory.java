@@ -52,7 +52,7 @@ public class AreaFactory {
 			
 
 			//获取第一个虚拟节点相连的所有节点，排除掉 成对的那个虚拟节点
-			List<AbstractNode> collect = virtualNode.getMoves().values().stream().filter(n->n.isReal()).collect(Collectors.toList());
+			List<AbstractNode> collect = virtualNode.values().stream().filter(n->n.isReal()).collect(Collectors.toList());
 			assert collect.size()>0;
 			Queue<AbstractNode> queue=new LinkedList<>();
 			queue.addAll(collect);
@@ -64,25 +64,21 @@ public class AreaFactory {
 				if(node.isReal()){
 					//真实节点    
 					//获取一个节点   相连的不包含在 areaNode 中的节点 防止一个节点重复进入队列
-					Collection<AbstractNode> values = node.getMoves().values().stream()
+					Collection<AbstractNode> values = node.values().stream()
 							.filter(n->!areaNode.contains(n))
 							.collect(Collectors.toList());
 					queue.addAll(values);
 					areaNode.addAll(values);
-					
-					
+		
 				}else{
 					//虚拟节点
 					set.add((VirtualNode)node);
-					areaNode.add(node);
-					
+					areaNode.add(node);	
 				}
 				
-			}
-			
+			}	
 			//队列循环结束之后，根据 Set<AbstractNode> areaNode 生成一个Area对象
 			result.add(new Area(areaNode));
-		
 		}
 		assert set.size()==virtualNodes.size();
 		return result;

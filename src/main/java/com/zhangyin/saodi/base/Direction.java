@@ -118,9 +118,9 @@ public enum Direction {
 	 }
 	 
 	 public static boolean isThreeDegreeAccessPoint(AbstractNode n,AbstractNode node,Direction d){
-		 Set<Direction> nSet = n.getMoves().keySet();
+		 Set<Direction> nSet = n.directions();
 		 assert nSet.size()==3;
-		 Set<Direction> nodeSet = node.getMoves().keySet(); 
+		 Set<Direction> nodeSet = node.directions();
 		 assert nodeSet.size()==3;
 		 
 		 Direction nlackofDirection = lackofDirection(nSet);

@@ -71,46 +71,50 @@ public class VirtualNodeGenerator {
 	//两度的accessPoint 插入虚拟节点  
 	private void generateTwoDegreeVirtualNode(RealNode realNode){
 		//随便选一个方向，
-		Direction d=realNode.getMoves().keySet().iterator().next();
+		Direction d=realNode.directions().iterator().next();
 		//这个方向上连接的节点
-		AbstractNode another = realNode.getMoves().get(d);
+		AbstractNode another = realNode.get(d);
 		another.setAccessPoint(true);
 		generatorVirtualNode(realNode, d, another);
 	}
 	
 	public void generatorVirtualNode(AbstractNode realNode, Direction d, AbstractNode another){
-		assert realNode.getMoves().get(d)==another;
-		assert another.getMoves().get(Direction.getInverseDirection(d))==realNode;
+		assert realNode.get(d)==another;
+		assert another.get(Direction.getInverseDirection(d))==realNode;
+		
+		assert realNode.isReal();
+		assert another.isReal();
 		
 		/** 在  realNode  和 another 两个节点之间，新增两个虚拟节点   
 		 *   realNodevirtual  为靠近  realnode的一端
 		 *   anothervirtual   为靠近 another的一端
 		 * 
 		 */
-		TwoDegreeVirtualNode realNodevirtual=new TwoDegreeVirtualNode(realNode);
-		TwoDegreeVirtualNode anothervirtual=new TwoDegreeVirtualNode(realNode);
+		TwoDegreeVirtualNode realNodevirtual=new TwoDegreeVirtualNode(realNode,(RealNode)realNode);
+		TwoDegreeVirtualNode anothervirtual=new TwoDegreeVirtualNode(realNode,(RealNode)another);
 		realNodevirtual.setPair(anothervirtual);
 		anothervirtual.setPair(realNodevirtual);
 		
 		
-		realNodevirtual.put(d, anothervirtual);
-		anothervirtual.put(Direction.getInverseDirection(d), realNodevirtual);
-		
-		realNode.put(d, realNodevirtual);
+		//realNodevirtual.put(d, anothervirtual);
 		realNodevirtual.put(Direction.getInverseDirection(d), realNode);
 		
-		another.put(Direction.getInverseDirection(d), anothervirtual);
 		anothervirtual.put(d, another);
+		//anothervirtual.put(Direction.getInverseDirection(d), realNodevirtual);
+		
+		realNode.put(d, realNodevirtual);
+		another.put(Direction.getInverseDirection(d), anothervirtual);
+		
 
 		virtualNodes.add(realNodevirtual);
 		virtualNodes.add(anothervirtual);	
-		assert realNode.getMoves().get(d)==realNodevirtual;
-		assert realNodevirtual.getMoves().get(d)==anothervirtual;
-		assert anothervirtual.getMoves().get(d)==another;
+		assert realNode.get(d)==realNodevirtual;
+		//assert realNodevirtual.get(d)==anothervirtual;
+		assert anothervirtual.get(d)==another;
 		
-		assert another.getMoves().get(Direction.getInverseDirection(d))==anothervirtual;
-		assert anothervirtual.getMoves().get(Direction.getInverseDirection(d))==realNodevirtual;
-		assert realNodevirtual.getMoves().get(Direction.getInverseDirection(d))==realNode;
+		assert another.get(Direction.getInverseDirection(d))==anothervirtual;
+		//assert anothervirtual.get(Direction.getInverseDirection(d))==realNodevirtual;
+		assert realNodevirtual.get(Direction.getInverseDirection(d))==realNode;
 		
 		}	
 

@@ -37,6 +37,8 @@ public class MyJFrame extends JFrame{
 		 int screenHeight = dimension.height; //获取屏幕的高
 		 this.setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
 		 this.add(contentPanel(),BorderLayout.CENTER);
+		 this.repaint();
+		 this.getContentPane().repaint();
 	}
 	
 	public  JPanel  contentPanel(){

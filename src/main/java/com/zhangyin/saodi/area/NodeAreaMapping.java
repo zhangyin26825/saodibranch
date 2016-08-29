@@ -31,11 +31,13 @@ public class NodeAreaMapping {
 			Set<RealNode> realnodes = area.realnodes;
 			for (Iterator iterator2 = realnodes.iterator(); iterator2.hasNext();) {
 				RealNode realNode = (RealNode) iterator2.next();
+				assert !map.containsKey(realNode);
 				map.put(realNode, area);
 			}
 			Set<VirtualNode> virtualNodes = area.virtualNodes;
 			for (Iterator iterator2 = virtualNodes.iterator(); iterator2.hasNext();) {
 				VirtualNode virtualNode = (VirtualNode) iterator2.next();
+				assert !map.containsKey(virtualNode);
 				map.put(virtualNode, area);
 			}	
 		}

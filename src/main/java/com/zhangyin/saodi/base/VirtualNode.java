@@ -21,6 +21,11 @@ public abstract class VirtualNode extends AbstractNode{
 	 * 
 	 */
 	public abstract VirtualNode getPair();
+	/**
+	 *  每个虚拟节点都连接一个真实节点
+	 * @return
+	 */
+	public abstract RealNode  getRealNode();
 	
 	
 	public static void destroy(VirtualNode a,VirtualNode b){
@@ -28,15 +33,15 @@ public abstract class VirtualNode extends AbstractNode{
 		assert b.getPair()==a;
 		
 		Direction atob=null;
-		for (Iterator iterator = a.getMoves().keySet().iterator(); iterator.hasNext();) {
+		for (Iterator iterator = a.directions().iterator(); iterator.hasNext();) {
 			Direction type = (Direction) iterator.next();
-			if(a.getMoves().get(type)==b){
+			if(a.get(type)==b){
 				atob=type;
 			}	
 		}
-		assert atob!=null;
-		AbstractNode anode=a.getMoves().get(Direction.getInverseDirection(atob));
-		AbstractNode bnode=b.getMoves().get(atob);
+	//	assert atob!=null;
+		AbstractNode anode=a.get(Direction.getInverseDirection(atob));
+		AbstractNode bnode=b.get(atob);
 		assert anode.isReal();
 		assert bnode.isReal();
 		

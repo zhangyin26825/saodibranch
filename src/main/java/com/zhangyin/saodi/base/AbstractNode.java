@@ -1,9 +1,11 @@
 package com.zhangyin.saodi.base;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 /**
  * 地图的一个节点，这里定义为一个抽象类，需要派生出两个类，
  * 一个是 真实的节点，
@@ -36,8 +38,24 @@ public abstract class  AbstractNode {
     	moves=new LinkedHashMap<Direction, AbstractNode>();
 	}
 	public void put(Direction d,AbstractNode node){
+		if(!this.isReal()&&!node.isReal()){
+			throw new IllegalArgumentException("虚拟节点不能连接虚拟节点");
+		}
 		moves.put(d, node);
 	}
+	
+	public AbstractNode  get(Direction d){
+		return moves.get(d);
+	}
+	
+	public boolean containsKey(Direction d){
+		return moves.containsKey(d);
+	}
+	
+	public Collection<AbstractNode>  values(){
+		return moves.values();
+	}
+	
 	//节点的度  连接了几个方向
 	public int degree(){
 		return moves.size();
@@ -46,21 +64,26 @@ public abstract class  AbstractNode {
 	public Set<Direction> directions(){
 		return moves.keySet();
 	}
+	/**
+	 *  得到所有可以移动的方向
+	 * @return
+	 */
+	public Set<Direction> getcanMoveDirection(){
+		Set<Direction> collect = moves.keySet().stream().filter(n->!moves.get(n).isMarked()).collect(Collectors.toSet());	
+		return collect;
+	}
 	
 	//节点的类型，子类去实现
 	public abstract boolean isReal();
+	
+	
 	public boolean isMarked() {
 		return marked;
 	}
 	public void setMarked(boolean marked) {
 		this.marked = marked;
 	}
-	public Map<Direction, AbstractNode> getMoves() {
-		return moves;
-	}
-	public void setMoves(Map<Direction, AbstractNode> moves) {
-		this.moves = moves;
-	}
+	
 	public boolean isAccessPoint() {
 		return isAccessPoint;
 	}

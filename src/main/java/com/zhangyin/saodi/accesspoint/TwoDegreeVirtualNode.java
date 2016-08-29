@@ -1,6 +1,7 @@
 package com.zhangyin.saodi.accesspoint;
 
 import com.zhangyin.saodi.base.AbstractNode;
+import com.zhangyin.saodi.base.RealNode;
 import com.zhangyin.saodi.base.VirtualNode;
 
 public class TwoDegreeVirtualNode extends VirtualNode{
@@ -9,11 +10,12 @@ public class TwoDegreeVirtualNode extends VirtualNode{
 	
 	VirtualNode pair;
 	
-	
+	RealNode realnode;
 
-	public TwoDegreeVirtualNode(AbstractNode node) {
+	public TwoDegreeVirtualNode(AbstractNode node,RealNode realnode) {
 		super();
 		this.node = node;
+		this.realnode=realnode;
 	}
 
 	@Override
@@ -28,6 +30,11 @@ public class TwoDegreeVirtualNode extends VirtualNode{
 
 	public void setPair(VirtualNode pair) {
 		this.pair = pair;
+	}
+
+	@Override
+	public RealNode getRealNode() {
+		return realnode;
 	}
 
 	
